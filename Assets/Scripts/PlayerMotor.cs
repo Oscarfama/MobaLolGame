@@ -6,7 +6,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class PlayerMotor : MonoBehaviour
 {
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -14,7 +14,16 @@ public class PlayerMotor : MonoBehaviour
 
     public void MoveToPoint(Vector3 point)
     {
-        Debug.Log(point);
         agent.SetDestination(point);
+    }
+    public bool StopMoving()
+    {
+        if(agent.remainingDistance <= agent.stoppingDistance)
+        {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }

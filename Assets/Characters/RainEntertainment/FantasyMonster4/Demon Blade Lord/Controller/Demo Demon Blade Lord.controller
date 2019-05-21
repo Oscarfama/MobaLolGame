@@ -12,9 +12,9 @@ AnimatorController:
   - m_Name: toDo
     m_Type: 3
     m_DefaultFloat: 0
-    m_DefaultInt: 0
+    m_DefaultInt: 1
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -475,10 +475,10 @@ AnimatorStateMachine:
     m_Position: {x: 375, y: 325, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102009346255649390}
-    m_Position: {x: 410, y: 390, z: 0}
+    m_Position: {x: 408, y: 384, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102384538809120602}
-    m_Position: {x: 445, y: 455, z: 0}
+    m_Position: {x: 444, y: 456, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102789798134716186}
     m_Position: {x: 480, y: 520, z: 0}

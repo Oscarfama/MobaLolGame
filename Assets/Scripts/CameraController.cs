@@ -1,17 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-public class CameraController : MonoBehaviour
+namespace CompleteProject
 {
-    public Transform target;
-    public Vector3 offset;
-    private float currentZoom = 10f;
-    public float pitch = 2f;
-
-    private void LateUpdate()
+    public class CameraController : MonoBehaviour
     {
-        transform.position = target.position - offset * currentZoom;
-        transform.LookAt(target.position + Vector3.up * pitch);
+        public Transform player;            
+        public float smoothing = 5f;        
+        Vector3 offset;                     
+
+        void Start()
+        {
+            offset = transform.position - player.position;
+        }
+
+        void FixedUpdate()
+        {
+            if (player.position != null)
+            {
+                Vector3 targetCamPos = player.position + offset;
+                transform.position = Vector3.Lerp(transform.position, targetCamPos, smoothing * Time.deltaTime);
+            }
+        }
+
+        public void setTarget(Transform newTarget)
+        {
+            player = newTarget;
+        }
     }
 }
