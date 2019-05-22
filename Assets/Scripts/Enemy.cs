@@ -29,7 +29,9 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        GameObject enemyTurret = GameObject.FindGameObjectWithTag(enemyTag); 
+        GameObject enemyTurret = GameObject.FindGameObjectWithTag(enemyTag);
+        Turret turret = (Turret)enemyTurret.GetComponent(typeof(Turret));
+
         target = WayPoints.points[0];
 
         if (shouldMove)
@@ -53,7 +55,7 @@ public class Enemy : MonoBehaviour
                 transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
             }else if(dist < 5f)
             {
-                animator.SetInteger("ToDo", 1);
+                StartCoroutine(Attack(turret)); 
                 shouldMove = false;
             }
         }
@@ -61,6 +63,13 @@ public class Enemy : MonoBehaviour
         {
             shouldMove = true;
         }
+
+    }
+    IEnumerator Attack(Turret target)
+    {
+        animator.SetInteger("ToDo", 1);
+        yield return new WaitForSeconds(1f);
+        target.GetHit(2);
 
     }
 

@@ -21,6 +21,7 @@ public class Turret : MonoBehaviour
 
     void Start()
     {
+        health = startHealth;
         InvokeRepeating("UpdateTarget",0f,0.5f);
     }
 
@@ -62,6 +63,12 @@ public class Turret : MonoBehaviour
             fireCountdown = 1f / fireRate;
         }
         fireCountdown -= Time.deltaTime;
+    }
+
+    public void GetHit(float amount)
+    {
+        health -= amount;
+        Debug.Log(" Torreta Golpeada, Health: " + health);
     }
 
     void Shoot()
