@@ -2,45 +2,66 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Attributes")]
     public float speed = 10f;
     private Transform target;
     private int wavepointIndex = 0;
+    public string enemyTag = "EnemyTurret";
 
+    [Header("Health")]
     private float health;
     public float startHealth = 100;
-    public int worth = 50;
-
     public Image healthBar;
+
+    public int worth = 50;
+    public float range = 5f;
+    public Animator animator;
+    private bool shouldMove = true;
 
     void Start()
     {
-        target = WayPoints.points[0];
         health = startHealth;
     }
 
     void Update()
     {
-        Vector3 dir = target.position - transform.position;
-        transform.Translate(dir.normalized * speed * Time.deltaTime,Space.World);
+        GameObject enemyTurret = GameObject.FindGameObjectWithTag(enemyTag); 
+        target = WayPoints.points[0];
 
-         if(Vector3.Distance(transform.position,target.position) <= 0.2f)
+        if (shouldMove)
         {
-            GetNextWaypoint();
-        }
-    }
+            Vector3 dir = target.position - transform.position;
+            transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
 
-    void GetNextWaypoint()
-    {
-        if(wavepointIndex >= WayPoints.points.Length - 1)
-        {
-            EndPath();
-            return;
+            if (Vector3.Distance(transform.position, target.position) <= 0.2f)
+            {
+                Die();
+            }
         }
-        wavepointIndex++;
-        target = WayPoints.points[wavepointIndex];
+
+        if (enemyTurret != null)
+        {
+            float dist = Vector3.Distance(enemyTurret.transform.position, transform.position); //////asdfasdfasdfa
+            if (dist < range && dist > 5f)
+            {
+                target = enemyTurret.transform;
+                Vector3 dir = target.position - transform.position;
+                transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+            }else if(dist < 5f)
+            {
+                animator.SetInteger("ToDo", 1);
+                shouldMove = false;
+            }
+        }
+        else
+        {
+            shouldMove = true;
+        }
+
     }
 
     public void TakeDamage(float amount)
@@ -59,9 +80,10 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void EndPath()
+    private void OnDrawGizmosSelected()
     {
-        Destroy(gameObject);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 
 }

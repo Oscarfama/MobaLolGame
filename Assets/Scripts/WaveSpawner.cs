@@ -9,10 +9,10 @@ public class WaveSpawner : MonoBehaviour
 
     public Transform spawnPoint;
 
-    public float timeBetweenWaves = 0f;
-    private float countdown = 5f;
+    public float timeBetweenWaves = 4f;
+    private float countdown = 2f;
 
-    private int waveIndex =4;
+    private int waveIndex =1;
 
      void Update()
     {
@@ -20,7 +20,7 @@ public class WaveSpawner : MonoBehaviour
         if (countdown <= 0f)
         {
              StartCoroutine(SpawnWave());
-            countdown = timeBetweenWaves *6;
+            countdown = timeBetweenWaves * 2 ;
         }
 
         countdown -= Time.deltaTime;

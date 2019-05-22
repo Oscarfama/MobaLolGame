@@ -581,9 +581,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
+  enemyTag: EnemyTurret
   startHealth: 100
-  worth: 50
   healthBar: {fileID: 3777684842740152441}
+  worth: 50
+  range: 10
+  animator: {fileID: 3777684841789745074}
 --- !u!1 &3777684841818260020
 GameObject:
   m_ObjectHideFlags: 0

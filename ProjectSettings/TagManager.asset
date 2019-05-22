@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Beam
   - Enemy
+  - EnemyTurret
   layers:
   - Default
   - TransparentFX

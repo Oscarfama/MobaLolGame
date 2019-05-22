@@ -16,6 +16,9 @@ public class Turret : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
 
+    private float health;
+    public float startHealth = 100;
+
     void Start()
     {
         InvokeRepeating("UpdateTarget",0f,0.5f);
