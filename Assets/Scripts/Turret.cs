@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Turret : MonoBehaviour
 {
@@ -16,8 +17,10 @@ public class Turret : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
 
+    [Header("Health")]
     private float health;
-    public float startHealth = 100;
+    public float startHealth = 4;
+    public Image healthBar;
 
     void Start()
     {
@@ -67,8 +70,15 @@ public class Turret : MonoBehaviour
 
     public void GetHit(float amount)
     {
-        health -= amount;
-        Debug.Log(" Torreta Golpeada, Health: " + health);
+        if (this != null) {
+            health -= amount;
+            healthBar.fillAmount = health / startHealth;
+
+            if (health <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
     void Shoot()

@@ -7,6 +7,7 @@ TagManager:
   - Beam
   - Enemy
   - EnemyTurret
+  - Nexus
   layers:
   - Default
   - TransparentFX

@@ -12,7 +12,7 @@ public class WaveSpawner : MonoBehaviour
     public float timeBetweenWaves = 4f;
     private float countdown = 2f;
 
-    private int waveIndex =1;
+    private int waveIndex =2;
 
      void Update()
     {
@@ -20,7 +20,7 @@ public class WaveSpawner : MonoBehaviour
         if (countdown <= 0f)
         {
              StartCoroutine(SpawnWave());
-            countdown = timeBetweenWaves * 2 ;
+            countdown = timeBetweenWaves * 20 ;
         }
 
         countdown -= Time.deltaTime;

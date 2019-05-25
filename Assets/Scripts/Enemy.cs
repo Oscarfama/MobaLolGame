@@ -9,8 +9,8 @@ public class Enemy : MonoBehaviour
     [Header("Attributes")]
     public float speed = 10f;
     private Transform target;
-    private int wavepointIndex = 0;
     public string enemyTag = "EnemyTurret";
+    public float damage = 5;
 
     [Header("Health")]
     private float health;
@@ -32,10 +32,14 @@ public class Enemy : MonoBehaviour
     {
         while (true)
         {
-            GameObject enemyTurret = GameObject.FindGameObjectWithTag(enemyTag);
+            GameObject[] enemyTurrets = GameObject.FindGameObjectsWithTag(enemyTag);
             target = WayPoints.points[0];
-            // Debug.Log(shouldMove);
-
+            /*
+             if (enemyTurret.gameObject.GetComponent<Turret>())
+            {
+                Debug.Log(enemyTurret.gameObject.componen);
+            }
+            */
             if (shouldMove)
             {
                 Vector3 dir = target.position - transform.position;
@@ -46,31 +50,51 @@ public class Enemy : MonoBehaviour
                     Die();
                 }
             }
-
-            if (enemyTurret != null)
+            foreach (var enemyTurret in enemyTurrets)
             {
-                Turret turret = (Turret)enemyTurret.GetComponent(typeof(Turret));
-                float dist = Vector3.Distance(enemyTurret.transform.position, transform.position); //////asdfasdfasdfa
-                if (dist < range && dist > 5f)
+                if (enemyTurret != null)
                 {
-                    target = enemyTurret.transform;
-                    Vector3 dir = target.position - transform.position;
-                    transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+                    Turret turret = (Turret)enemyTurret.GetComponent(typeof(Turret));
+                    if (turret != null)
+                    {
+                        float dist = Vector3.Distance(enemyTurret.transform.position, transform.position); //////asdfasdfasdfa
+                        if (dist < range && dist > 8f)
+                        {
+                            target = enemyTurret.transform;
+                            Vector3 dir = target.position - transform.position;
+                            transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+                        }
+                        else if (dist < 8f)
+                        {
+                            target = enemyTurret.transform;
+                            GotoNextTarget(target, 0, false);
+                            yield return new WaitForSeconds(1.25f);
+                            turret.GetHit(damage);
+                        }else
+                        {
+                            GotoNextTarget(target, 0,true);
+                        }
+                    }
                 }
-                else if (dist < 5f)
+                else
                 {
-                    animator.SetInteger("ToDo", 1);
-                    yield return new WaitForSeconds(1.25f);
-                    turret.GetHit(2);
-                    shouldMove = false;
+                    GotoNextTarget(target, 0, true);
                 }
             }
-            else
+            if (enemyTurrets.Length == 0)
             {
-                shouldMove = true;
+                target = WayPoints.points[0];
+                GotoNextTarget(target, 0,true);
             }
             yield return new WaitForSeconds(0f);
         }
+    }
+    
+    private void GotoNextTarget(Transform target, int AnimationNumber, bool flag)
+    {
+        animator.SetInteger("ToDo", AnimationNumber);
+        shouldMove = flag;
+        transform.LookAt(target);
     }
 
     public void TakeDamage(float amount)
@@ -94,5 +118,13 @@ public class Enemy : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Nexus")
+        {
+            Nexus nexus = (Nexus)collision.gameObject.GetComponent(typeof(Nexus));
+            nexus.GetHit(damage);
+            Die();
+        }
+    }
 }
