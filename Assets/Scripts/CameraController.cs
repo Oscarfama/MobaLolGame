@@ -7,7 +7,7 @@ namespace CompleteProject
     {
         public Transform player;            
         public float smoothing = 5f;        
-        Vector3 offset;                     
+        Vector3 offset;
 
         void Start()
         {
@@ -19,6 +19,8 @@ namespace CompleteProject
             if (player.position != null)
             {
                 Vector3 targetCamPos = player.position + offset;
+                // targetCamPos.y += 165;
+                // targetCamPos.z -= 150;
                 transform.position = Vector3.Lerp(transform.position, targetCamPos, smoothing * Time.deltaTime);
             }
         }

@@ -7,7 +7,11 @@ TagManager:
   - Beam
   - Enemy
   - EnemyTurret
-  - Nexus
+  - EnemyRed
+  - EnemyTurretBlue
+  - NexusBlue
+  - NexusRed
+  - texttt
   layers:
   - Default
   - TransparentFX

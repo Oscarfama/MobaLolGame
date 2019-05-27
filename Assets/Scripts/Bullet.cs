@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Bullet : MonoBehaviour
+public class Bullet : NetworkBehaviour
 {
     private Transform target;
     public float speed = 70f;
-    public float damage = 50f;
+    public float damage = 10f;
     public GameObject ImpactEffect;
+    private bool flag;
 
     public void Seek(Transform _target)
     {
@@ -44,7 +46,7 @@ public class Bullet : MonoBehaviour
     void Damage(Transform enemy) 
     {
         Enemy e = enemy.GetComponent<Enemy>();
-        if(e != null)
+        if (e != null)
         {
             e.TakeDamage(damage);
         }

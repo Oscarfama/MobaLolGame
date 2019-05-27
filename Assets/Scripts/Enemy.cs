@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
+using UnityEngine.Networking;
 
-public class Enemy : MonoBehaviour
+public class Enemy : NetworkBehaviour
 {
     [Header("Attributes")]
     public float speed = 10f;
+    public int index;
     private Transform target;
     public string enemyTag = "EnemyTurret";
     public float damage = 5;
+    public string nexusString;
 
     [Header("Health")]
     private float health;
@@ -33,7 +36,7 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             GameObject[] enemyTurrets = GameObject.FindGameObjectsWithTag(enemyTag);
-            target = WayPoints.points[0];
+            target = WayPoints.points[index];
             /*
              if (enemyTurret.gameObject.GetComponent<Turret>())
             {
@@ -67,7 +70,7 @@ public class Enemy : MonoBehaviour
                         else if (dist < 8f)
                         {
                             target = enemyTurret.transform;
-                            GotoNextTarget(target, 0, false);
+                            GotoNextTarget(target, 1, false);
                             yield return new WaitForSeconds(1.25f);
                             turret.GetHit(damage);
                         }else
@@ -97,7 +100,7 @@ public class Enemy : MonoBehaviour
         transform.LookAt(target);
     }
 
-    public void TakeDamage(float amount)
+    public bool TakeDamage(float amount)
     {
         health -= amount;
         healthBar.fillAmount = health / startHealth;
@@ -105,7 +108,9 @@ public class Enemy : MonoBehaviour
         if (health <= 0)
         {
             Die();
+            return true;
         }
+        return false;
     }
 
     void Die()
@@ -120,10 +125,10 @@ public class Enemy : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Nexus")
+        if(collision.gameObject.tag == nexusString)
         {
             Nexus nexus = (Nexus)collision.gameObject.GetComponent(typeof(Nexus));
-            nexus.GetHit(damage);
+            nexus.GetHit(damage *2);
             Die();
         }
     }
